@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="美しいビジュアルエフェクト付きのマインスイーパーゲーム">
+    <title>✨ 美麗マインスイーパー</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <style>
+        /* プリローダー */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .preloader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="preloader" id="preloader">
+        <div class="loader"></div>
+    </div>
+    
+    <div class="title-screen" id="title-screen">
+        <div class="title-content">
+            <div class="title-logo">
+                <h1 class="title-main">✨ MINESWEEPER</h1>
+                <h2 class="title-sub">美麗マインスイーパー</h2>
+                <div class="title-decoration">
+                    <span class="mine-icon">💣</span>
+                    <span class="mine-icon">💎</span>
+                    <span class="mine-icon">🚩</span>
+                </div>
+            </div>
+            
+            <div class="title-menu">
+                <button class="title-btn start-btn" id="start-game">
+                    <span class="btn-icon">🎮</span>
+                    ゲーム開始
+                </button>
+                
+                <div class="difficulty-preview">
+                    <h3>難易度を選択</h3>
+                    <div class="difficulty-cards">
+                        <div class="difficulty-card" data-difficulty="easy">
+                            <div class="card-icon">🟢</div>
+                            <div class="card-title">初級</div>
+                            <div class="card-desc">9×9 / 10個の地雷</div>
+                        </div>
+                        <div class="difficulty-card" data-difficulty="medium">
+                            <div class="card-icon">🟡</div>
+                            <div class="card-title">中級</div>
+                            <div class="card-desc">16×16 / 40個の地雷</div>
+                        </div>
+                        <div class="difficulty-card" data-difficulty="hard">
+                            <div class="card-icon">🔴</div>
+                            <div class="card-title">上級</div>
+                            <div class="card-desc">30×16 / 99個の地雷</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="title-footer">
+                    <p class="controls-info">
+                        <span class="control-item">🖱️ 左クリック: セルを開く</span>
+                        <span class="control-item">🖱️ 右クリック: フラグ</span>
+                        <span class="control-item">⌨️ Rキー: リセット</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="title-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+    </div>
+    
+    <div class="container" id="game-container" style="display: none;">
+        <header>
+            <h1>✨ 美麗マインスイーパー</h1>
+        </header>
+        
+        <div class="game-controls">
+            <div class="difficulty-selector">
+                <button class="difficulty-btn active" data-difficulty="easy">
+                    初級 (9×9)
+                </button>
+                <button class="difficulty-btn" data-difficulty="medium">
+                    中級 (16×16)
+                </button>
+                <button class="difficulty-btn" data-difficulty="hard">
+                    上級 (30×16)
+                </button>
+            </div>
+            
+            <div class="game-info">
+                <div class="info-item">
+                    <span class="label">地雷数:</span>
+                    <span id="mine-count">10</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">時間:</span>
+                    <span id="timer">000</span>
+                </div>
+                <button id="reset-btn" class="reset-btn">🙂</button>
+            </div>
+        </div>
+        
+        <div class="game-board-container">
+            <div id="game-board" class="game-board"></div>
+        </div>
+        
+        <div id="game-over-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2 id="game-result">ゲーム終了</h2>
+                <p id="game-message">お疲れ様でした！</p>
+                <div class="modal-buttons">
+                    <button id="new-game-btn" class="btn">新しいゲーム</button>
+                    <button id="back-to-title-btn" class="btn btn-secondary">タイトルに戻る</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+    <script>
+        // プリローダー
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.classList.add('hidden');
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 500);
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
